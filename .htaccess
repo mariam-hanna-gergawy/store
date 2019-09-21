@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /store
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+# Redirect requests to index.php
+RewriteRule ^(.+)$ index.php [QSA,L]
