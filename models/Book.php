@@ -13,7 +13,7 @@
  */
 class Book extends Model {
 
-    public function __construct($id = NULL) {
+    public function __construct() {
         $this->table = "books";
         $this->fillable = ['name', 'isbn', 'author', 'publish_date'];
     }
