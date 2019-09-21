@@ -21,7 +21,16 @@ class BooksController extends Controller {
             "author" => FILTER_SANITIZE_STRING,
         );
         $searchCriteria = $this->request->get($filters, FALSE);
-        $this->response->success($model->all($searchCriteria));
+        $this->response->success($model->all($searchCriteria ? $searchCriteria : array()));
+    }
+
+    /**
+     * serch for books which name, isbn or author match keywor
+     */
+    public function search_get() {
+        $keyword = $this->request->get(["keyword" => FILTER_SANITIZE_STRING], TRUE, "keyword");
+        $model = new Book();
+        $this->response->success($model->searchKeyword($keyword));
     }
 
     /**

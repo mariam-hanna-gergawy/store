@@ -16,7 +16,7 @@ class Response {
      * success response
      * @param array $data
      */
-    public function success($data = null) {
+    public function success(array $data = array()) {
         $this->_response([
             $this->_successField => true,
             $this->_dataField => $data,

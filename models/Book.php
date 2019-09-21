@@ -16,6 +16,7 @@ class Book extends Model {
     public function __construct() {
         $this->table = "books";
         $this->fillable = ['name', 'isbn', 'author', 'publish_date'];
+        $this->searchable = ['name', 'isbn', 'author'];
     }
 
     /**
@@ -37,17 +38,17 @@ class Book extends Model {
      * @param type $searchCriteria
      * @return type
      */
-    public function all($searchCriteria) {
+    public function all(array $searchCriteria = array()) {
         $db = new Database();
-        $conditions = "";
+        $conditions = array();
         $params = array();
         foreach ($searchCriteria as $field => $value) {
-            if (in_array($field, ["name", "isbn", "author"])) {
-                $conditions .= " $field=:$field ";
+            if (in_array($field, $this->searchable)) {
+                $conditions[] = " $field=:$field ";
                 $params[$field] = $value;
             }
         }
-        return $db->all($this, ["id", "name", "isbn", "author", "publish_date"], $conditions, $params);
+        return $db->all($this, ["id", "name", "isbn", "author", "publish_date"], implode("AND ", $conditions), $params);
     }
 
 }

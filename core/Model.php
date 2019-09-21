@@ -15,6 +15,12 @@ abstract class Model {
     public $fillable = array();
 
     /**
+     * array holds model's table fields which user can search in it
+     * @var array 
+     */
+    public $searchable = array();
+
+    /**
      * array holds errors
      * @var array 
      */
@@ -96,15 +102,19 @@ abstract class Model {
     }
 
     /**
-     * get model records which matched search criteria
-     * @param array $select
-     * @param array $searchCriteria
-     * @return type
+     * Search in searchable fileds with keyword
+     * @param string $keyword
+     * @return array
      */
-//    public function all($select = null, $searchCriteria = array()) {
-//        $db = new Database();
-//        return $db->all($this, $select, $searchCriteria);
-//    }
+    public function searchKeyword($keyword) {
+        $db = new Database();
+        $conditions = array();
+        foreach ($this->searchable as $field) {
+            $conditions[] = "$field LIKE '%$keyword%'";
+        }
+        $params = array();//array(":keyword" => $keyword);
+        return $db->all($this, $this->fillable, implode(" OR ", $conditions), $params);
+    }
 
     /**
      * retrieve errors array

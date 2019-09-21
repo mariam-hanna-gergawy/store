@@ -110,11 +110,8 @@ class Database {
     public function all(Model $model, $select = array(), $conditions = "", $params = array()) {
         $sql = $this->_allQuery($model, $select);
         if ($conditions) {
-            $sql .= " AND " . $conditions;
+            $sql .= " WHERE " . $conditions;
         }
-//        foreach ($searchCriteria as $field => $value) {
-//            $sql .= " AND $field = :$field";
-//        }
         $q = $this->_db->prepare($sql);
         $q->setFetchMode(PDO::FETCH_ASSOC);
         $q->execute($params);
@@ -130,8 +127,7 @@ class Database {
     private function _allQuery(Model $model, $select = null) {
         return "SELECT "
                 . ($select ? (is_array($select) ? implode(", ", $select) : $select) : "*")
-                . " FROM " . $model->getTable()
-                . " WHERE 1";
+                . " FROM " . $model->getTable();
     }
 
     /**
